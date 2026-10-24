@@ -1,0 +1,74 @@
+mysql_meta:
+  host: localhost
+  port: 3306
+  user: root1
+  password: root1234
+  database: metadata
+
+mysql_dr:
+  host: localhost
+  port: 3306
+  user: root1
+  password: root1234
+  database: datarepo
+
+qdrant:
+  host: localhost
+  port: 6333
+  column_collection_name: columns_data
+  metric_collection_name: metrics_data
+  dim: 1024
+  search_k: 3
+  score_threshold: 0.8
+
+elasticsearch:
+  host: localhost
+  port: 9200
+  auth_user: "elastic"
+  auth_password: "123456"
+  index_name: columns_data
+  limit: 20
+  threshold: 0.8
+
+embed_model:
+  host: localhost
+  port: 8081
+  model_path: "/Users/vincent/hugging_face_model/bge-large-zh"
+
+
+llm:
+  model_name: qwen3.8-max
+  api_key: sk-*******
+  base_url: https://dashscope.aliyuncs.com/compatible-mode/v1
+  model_provider: openai
+  temperature: 0.0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

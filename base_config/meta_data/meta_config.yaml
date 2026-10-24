@@ -1,0 +1,180 @@
+tables:
+  - name: fact_order
+    role: fact
+    description: 事实表,记录不同维度表信息
+    columns:
+      - name: order_id
+        role: primary_key
+        description: 订单唯一标识
+        alias: [订单ID]
+        sync: False
+
+      - name: customer_id
+        role: foreign_key
+        description: 关联客户信息表
+        alias: [客户ID,用户ID]
+        sync: False
+
+      - name: product_id
+        role: foreign_key
+        description: 关联产品信息表
+        alias: [产品ID,商品ID]
+        sync: False
+
+      - name: date_id
+        role: foreign_key
+        description: 关联日期表
+        alias: [日期,下单日期]
+        sync: False
+
+      - name: region_id
+        role: foreign_key
+        description: 关联地区表
+        alias: [地区ID,区域ID]
+        sync: False
+
+      - name: order_quantity
+        role: metric
+        description: 关联平均度量指标
+        alias: [销量,购买数量,件数]
+        sync: False
+
+      - name: order_amount
+        role: metric
+        description: 关联总额度量指标
+        alias: [销售额,订单金额,收入]
+        sync: False
+
+  - name: dim_product
+    role: dim
+    description: 产品维度表，用于描述产品信息内容
+    columns:
+      - name: product_id
+        role: primary_key
+        description: 产品ID
+        alias: [商品ID,产品ID]
+        sync: False
+
+      - name: product_name
+        role: dimension
+        description: 产品名称
+        alias: [商品名称,产品名称]
+        sync: True
+
+      - name: category
+        role: dimension
+        description: 商品种类
+        alias: [商品类别,品类,分类]
+        sync: True
+
+      - name: brand
+        role: dimension
+        description: 品牌
+        alias: [品牌名称,商品类别]
+        sync: True
+
+  - name: dim_region
+    role: dim
+    description: 地区维度表，用于记录订单所在地区、区域信息
+    columns:
+      - name: region_id
+        role: primary_key
+        description: 地区表唯一标识
+        alias: [地区ID,城市ID,所在地区,销售区域ID]
+        sync: True
+
+      - name: province
+        role: dimension
+        description: 订单所属的省名
+        alias: [省名,省份,所在省份,销售区域所在省份]
+        sync: True
+
+      - name: region_name
+        role: dimension
+        description: 订单所属的大区名称，如华东、华南
+        alias: [地名,区域,大区,销售区域]
+        sync: True
+
+      - name: country
+        role: dimension
+        description: 地区所在的名称
+        alias: [国家,国家名称,销售区域所在国家]
+        sync: True
+
+  - name: dim_date
+    role: dim
+    description: 日期维度表，用于订单产生的日期信息
+    columns:
+      - name: date_id
+        role: primary_key
+        description: 订单产生的日期
+        alias: [日期ID,时间ID]
+        sync: False
+
+      - name: year
+        role: dimension
+        description: 年
+        alias: [年,年份]
+        sync: False
+
+      - name: quarter
+        role: dimension
+        description: 季度
+        alias: [季度,季]
+        sync: True
+
+      - name: month
+        role: dimension
+        description: 月
+        alias: [月,月份]
+        sync: False
+
+      - name: day
+        role: dimension
+        description: 天
+        alias: [日,天]
+        sync: False
+
+  - name: dim_customer
+    role: dim
+    description: 客户维度表，记录订单所属客户的信息
+    columns:
+      - name: customer_id
+        role: primary_key
+        description: 客户表唯一标识
+        alias: [客户ID,用户ID]
+        sync: False
+
+      - name: customer_name
+        role: dimension
+        description: 订单所属的客户名称
+        alias: [客户名称,用户名]
+        sync: True
+
+      - name: gender
+        role: dimension
+        description: 客户性别
+        alias: [性别]
+        sync: True
+
+      - name: member_level
+        role: dimension
+        description: 客户等级
+        alias: [用户等级,客户等级]
+        sync: True
+
+metrics:
+  - name: AOV
+    role: metric
+    relevant_columns:
+      - fact_order.order_quantity
+    description: 全称Average Order Value ，表示所有订单的成交金额平均值
+    alias: [平均单价,平均订单金额]
+
+  - name: GMV
+    role: metric
+    relevant_columns:
+      - fact_order.order_amount
+    description: 全称Gross Merchandise Value，表示所有订单的成交总金额
+    alias: [成交总额,订单总额]
+
